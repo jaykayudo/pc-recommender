@@ -15,7 +15,7 @@ const Header = () => {
           </li>
           <li>
             <a href="#" className="text-white">
-              Profile
+              Sign In
             </a>
           </li>
          

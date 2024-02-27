@@ -1,11 +1,34 @@
 import React, { useState } from "react";
 import { data } from "../assets/data";
+import dellxps from '../images/dell xps.jpg';
+import inspirion from '../images/dell inspirion.jpg';
+import spectre from '../images/spectre.jpg';
+
+// Define an array of laptop details
+const laptopDetails = [
+  {
+    image: dellxps,
+    name: "Dell XPS 14",
+    price: "$1000",
+  },
+  {
+    image: inspirion,
+    name: "Dell Inspirion",
+    price: "$1200",
+  },
+  {
+    image: spectre,
+    name: "HP Spectre",
+    price: "$1500",
+  },
+];
 
 const Recommendation = ({ index, setIndex, totalQuestions }) => {
   const [question, setQuestion] = useState(data[index]);
   const [selectedOptions, setSelectedOptions] = useState(
     new Array(data.length).fill(null)
   );
+  const [showImages, setShowImages] = useState(false);
 
   const next = () => {
     if (index < data.length - 1) {
@@ -13,6 +36,9 @@ const Recommendation = ({ index, setIndex, totalQuestions }) => {
         setQuestion(data[prevIndex + 1]);
         return prevIndex + 1;
       });
+    } else {
+      // If on the last question, show images
+      setShowImages(true);
     }
   };
 
@@ -32,7 +58,7 @@ const Recommendation = ({ index, setIndex, totalQuestions }) => {
   };
 
   return (
-    <div className="container mx-auto sm:px-12 px-6 ">
+    <div className="container mx-auto sm:px-12 px-6">
       <h2 className="font-semibold text-xl md:text-center mb-4 md:text-5xl text-center sm:pb-6">
         {question.question}
       </h2>
@@ -40,7 +66,11 @@ const Recommendation = ({ index, setIndex, totalQuestions }) => {
         {question.options.map((option, optionIndex) => (
           <label
             key={optionIndex}
-            className="flex items-center text-sm border border-gray-200 p-4 md:p-8 cursor-pointer rounded-md mb-2"
+            className={`flex items-center text-sm border p-4 md:p-8 cursor-pointer rounded-md mb-2 ${
+              selectedOptions[index] === optionIndex
+                ? "border-blue-600"
+                : "border-gray-200"
+            }`}
           >
             <input
               type="checkbox"
@@ -73,9 +103,25 @@ const Recommendation = ({ index, setIndex, totalQuestions }) => {
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
           disabled={!selectedOptions[index] && selectedOptions[index] !== 0}
         >
-          Next
+          {index === data.length - 1 ? "Get PC Recommendations" : "Next"}
         </button>
       </div>
+      {showImages && (
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Render laptop details here */}
+          {laptopDetails.map((laptop, laptopIndex) => (
+            <div key={laptopIndex} className="flex flex-col items-center">
+              <img
+                src={laptop.image}
+                alt={laptop.name}
+                className="w-full md:w-48 lg:w-56 h-auto mb-2"
+              />
+              <p className="text-lg font-semibold mb-1">{laptop.name}</p>
+              <p className="text-gray-600">{laptop.price}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
