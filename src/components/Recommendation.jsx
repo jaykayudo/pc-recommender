@@ -9,17 +9,20 @@ const laptopDetails = [
   {
     image: dellxps,
     name: "Dell XPS 14",
-    price: "$1000",
+    price: "From $1699",
+    specifications: "Windows 11 Intel® Core™ Ultra 7 Processor 155H (24MB Cache, 16 cores, up to 4.8 GHz)",
   },
   {
     image: inspirion,
     name: "Dell Inspirion",
-    price: "$1200",
+    price: "From $1200",
+    specifications: "Windows 10 8th Generation Intel® Core™ i7-8565U Processor (8MB Cache, up to 4.6 GHz)",
   },
   {
     image: spectre,
     name: "HP Spectre",
-    price: "$1500",
+    price: "From $1500",
+    specifications: "Windows 11 ProIntel® Core™ Ultra 7 processorIntel® Arc™ Graphics16 GB memory; 2 TB SSD storage14 diagonal 2.8K touch display",
   },
 ];
 
@@ -29,6 +32,7 @@ const Recommendation = ({ index, setIndex, totalQuestions }) => {
     new Array(data.length).fill(null)
   );
   const [showImages, setShowImages] = useState(false);
+  const [showSpecifications, setShowSpecifications] = useState(Array(laptopDetails.length).fill(false));
 
   const next = () => {
     if (index < data.length - 1) {
@@ -55,6 +59,12 @@ const Recommendation = ({ index, setIndex, totalQuestions }) => {
     const newSelectedOptions = [...selectedOptions];
     newSelectedOptions[index] = optionIndex;
     setSelectedOptions(newSelectedOptions);
+  };
+
+  const toggleSpecifications = (laptopIndex) => {
+    const newShowSpecifications = [...showSpecifications];
+    newShowSpecifications[laptopIndex] = !newShowSpecifications[laptopIndex];
+    setShowSpecifications(newShowSpecifications);
   };
 
   return (
@@ -110,14 +120,23 @@ const Recommendation = ({ index, setIndex, totalQuestions }) => {
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Render laptop details here */}
           {laptopDetails.map((laptop, laptopIndex) => (
-            <div key={laptopIndex} className="flex flex-col items-center">
+            <div key={laptopIndex} className="flex flex-col items-center sm:mt-6">
               <img
                 src={laptop.image}
                 alt={laptop.name}
                 className="w-full md:w-48 lg:w-56 h-auto mb-2"
               />
-              <p className="text-lg font-semibold mb-1">{laptop.name}</p>
-              <p className="text-gray-600">{laptop.price}</p>
+              <p className="text-lg sm:text-2xl font-semibold mb-1">{laptop.name}</p>
+              <p className="text-gray-700 text-sm sm:text-lg">{laptop.price}</p>
+              <button
+                onClick={() => toggleSpecifications(laptopIndex)}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600"
+              >
+                View Details
+              </button>
+              {showSpecifications[laptopIndex] && (
+                <p className="text-gray-600 mt-2">{laptop.specifications}</p>
+              )}
             </div>
           ))}
         </div>

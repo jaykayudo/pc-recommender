@@ -10,18 +10,6 @@ function App() {
   const [index, setIndex] = useState(0);
   const totalQuestions = data.length;
 
-  const handleNext = () => {
-    if (index < totalQuestions - 1) {
-      setIndex(index + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (index > 0) {
-      setIndex(index - 1);
-    }
-  };
-
   return (
     <>
       <div>
